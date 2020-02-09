@@ -1,1 +1,1 @@
-Notes for different programming languages.
+Using Git and have a nice day.
