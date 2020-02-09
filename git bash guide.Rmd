@@ -1,0 +1,147 @@
+---
+title: "git bash"
+author: "Hochia"
+date: "2019/10/12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# hochia.github.io
+
+```{git}
+cd Desktop/blog/
+git clone http://github.com/Hochia/Hochia.github.io
+cd Hochia.github.io
+
+git add .
+git commit -m "Renew"
+git push origin master
+
+git commit -m "update 11/28, upload 12/05 and 12/12"
+git commit -m "upload 12/26"
+```
+
+# tell me who you are
+
+```{git}
+git config --global user.email "johnny30618@gmail.com"
+git config --global user.name "Hochia"
+```
+
+# modify commit message
+
+https://help.github.com/en/github/committing-changes-to-your-project/changing-a-commit-message
+
+# delete the folder in github
+
+```{git}
+# In the command-line, navigate to your local repository.
+cd Desktop/blog/
+git clone http://github.com/Hochia/Hochia.github.io
+cd Hochia.github.io
+
+# Ensure you are in the default branch:
+git checkout master
+
+## or switch to a new branch
+# git checkout -b new-branch-name
+
+# The rm -r command will recursively remove your folder:
+git rm -r folder-name
+
+# Commit the change:
+git commit -m "Remove directory"
+
+# Push the change to your remote repository:
+git push origin master
+
+## or push the branch
+# git push origin new-branch-name
+```
+
+# upload the folder in github
+
+git add <file-name-1> <file-name-2> <file-name-3>
+
+git add folder/subfolder/*
+
+$ git add --all
+
+```{git}
+# Check the status
+git status
+
+# Add all the changes
+git add .
+
+# Commit the changes
+git commit -m "add files"
+
+## or in one step
+# git commit -a -m "add files"
+
+# Push the change to your remote repository:
+git push origin master
+```
+
+# blogdown and github
+
+Open git bash, move to local repository
+
+```{git}
+cd Desktop/
+```
+
+Clone the repository on Desktop
+
+```{git}
+git clone http://github.com/Hochia/Hochia.github.io
+```
+
+Move to the repository
+
+```{git}
+cd Hochia.github.io
+```
+
+Copy the files in public to the repository
+
+(Not necessary) Check the status, you will find the information about the changes
+
+```{git}
+git status
+```
+
+Add the changes
+
+```{git}
+git add .
+```
+
+Commit the changes
+
+```{git}
+git commit -m "public"
+```
+
+Push the change to your remote repository:
+
+```{git}
+git push origin master
+```
+
+Summary
+
+```{git}
+cd Desktop/
+git clone http://github.com/Hochia/Hochia.github.io
+cd Hochia.github.io
+# Copy the files in public to the repository
+git add .
+git commit -m "public"
+git push origin master
+```
+

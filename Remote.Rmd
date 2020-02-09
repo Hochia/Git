@@ -1,0 +1,217 @@
+---
+title: "Remote"
+author: "Hochia"
+date: "2020/2/5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 遠端作業
+
+1. 在 master 推送:
+
+```{git}
+git clone https://github.com/Hochia/hello-world.git
+cd hello-world
+ls
+vim simple.md
+git add simple.md
+git commit -m "enrich the content"
+git push
+
+```
+
+推送: push
+
+`git push` 可以將本地的工作推送至設定好的遠端，
+預設的作法是將目前分支的新提交推送至遠端。
+
+2. 推送新分支:
+
+```{git}
+git branch hc
+git checkout hc
+touch simple.Rmd
+vim simple.Rmd
+git add simple.Rmd
+git commit -m "Add .Rmd file"
+git push -u origin hc
+```
+
+其中建立並且切換至該分支的命令可以簡化成:
+
+```{git}
+git checkout -b hc
+```
+
+`-u` 可以指示 Git 追蹤特定的遠端分支，
+也就是將本地分支綁定至遠端分支，將來保持同步就很容易。
+
+`origin` 是遠端儲存庫的預設名稱，就像 master 是本地端分支的預設名稱。
+
+查看目儲存庫所對應的遠端儲存庫:
+
+```{git}
+git remote -v
+```
+
+想要了解目前儲存庫存庫的遠端設定:
+
+```{git}
+git remote show origin
+```
+
+`git remote` 還能加入、更新、刪除遠端的資料。
+
+`git fetch` 是從已追蹤的所有分支取得異動資料。
+
+`git push` 預設行為是僅推送至對應的遠端分支。
+
+3. 從遠端下載異動資料:
+
+在 GitHub 的 hc 分支新增檔案後提交。
+
+```{git}
+git fetch
+git status
+```
+
+使用 `git fetch` 可以將差異的資料從遠端下載，但還不會套用這些差異。
+
+4. 套用下載的異動資料:
+
+`git fetch` 加 `git merge` 等同於 `git pull`。
+
+```{git}
+git fetch
+git merge
+```
+
+提取: pull
+
+提取是下載遠端的資料並套用遠端的異動。
+
+```{git}
+git pull
+```
+
+5. 將本地端的儲存庫發布到 GitHub
+
+建立資料夾 notes，初始化儲存庫後提交。
+
+```{git}
+mkdir notes
+cd notes
+git init
+echo "Notes for different programming languages." >> README.md
+git add .
+git commit -m "Initial commit"
+```
+
+也在 GitHub 上建立儲存庫，但保持淨空，不建立 README.md 檔案，否則會觸發初始化儲存庫的動作。
+
+下一步就是為本地儲存庫新增遠端參照:
+
+如 `git remote add origin <遠端儲存庫的地址>`。
+
+```{git}
+git remote add origin https://github.com/Hochia/notes.git
+```
+
+再將本地分支推送至遠端儲存庫:
+
+```{git}
+git push -u origin master
+```
+
+這樣就完成了。
+
+6. 修改遠端儲存庫網址:
+
+```{git}
+git remote set-url origin https://github.com/Hochia/Git.git
+
+```
+
+
+## Social coding
+
+### Fork
+
+衍生: Fork
+
+衍生儲存庫
+
+衍生並非 Git 的原生功能，而是 GitHub 的功能。
+
+1. 對特定專案進行衍生時，會得到一份完整的儲存庫複本，並且放在你的遠端儲存庫裡。
+
+2. 如果將衍生儲存庫複製到本地，會在遠端清單中看到 origin 別名是指向你 GitHub 帳戶的儲存庫。
+
+3. 原始儲存庫會被設定為 upstream 別名，必須手動設定。
+
+
+1. 對特定專案進行衍生:
+
+在 GitHub 的 Spoon-Knife 儲存庫點擊 Fork。
+
+2. 將衍生儲存庫複製到本地:
+
+```{git}
+git clone https://github.com/Hochia/Spoon-Knife.git
+cd Spoon-Knife
+```
+
+3. 新增 upstream 遠端:
+
+```
+git remote add upstream https://github.com/<原始擁有者>/<原始儲存庫>.git
+```
+
+```{git}
+git remote add upstream https://github.com/octocat/Spoon-Knife.git
+```
+
+這樣一來，不僅讓本地儲存庫與衍生的 origin 遠端保持同步，
+也可以從原始的 upstream 遠端取得異動資料。
+
+* 從 upstream 遠端取得異動資料再合併至本地端的儲存庫
+
+* 將本地端儲存庫的修改推送至 origin 遠端
+
+以上兩步驟就能良好的處理原始、衍生與本地的關係。
+
+### Pull request
+
+提取請求: pull request
+
+之所以會衍生某個儲存庫，通常是因為你並非原始專案的直接貢獻者，或是因為你並不希望在還不太熟悉專案的情況下，搞亂別人的程式碼。
+
+如果對該專案有所貢獻，告知原始專案的作者你做了一些有意思的事情，希望他們抽空看看，甚至彙整至專案裡，就需要送出提取請求。
+
+如果是團隊成員，就應該跳過衍生和提取的程序，直接將儲存庫的權限分享給所有團隊成員。
+
+建立提取請求:
+
+在 GitHub 帳戶的衍生儲存庫中提出請求。注意，提出請求只能從不同的分支提出。記得，為了新功能或重構而建立新分支是良好習慣。
+
+在本地建立 TeaSpoon 分支，提交新檔案後推送到 GitHub:
+
+```{git}
+git checkout -b TeaSpoon
+vim TeaSpoon.md
+git add TeaSpoon.md
+git commit -m "narration"
+git push -u origin TeaSpoon
+```
+
+在 GitHub 頁面，點擊 Pull request，
+頁面上方會顯示比對的分支，以及 Able to merge 提醒可以自動合併，表示沒有未解決的衝突。
+頁面中間可以描述你對這個分支做了哪些事情。
+頁面底端可以看到差異的細節。
+最後點擊 Create pull request，將請求提交給原始作者。
+
+直到原始儲存庫的持有者決定採納或拒絕，這項提取請求就會關閉。

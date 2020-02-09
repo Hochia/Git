@@ -1,0 +1,146 @@
+---
+title: "Start up!"
+author: "Hochia"
+date: "2020/2/4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Git install
+
+對 Windows 的使用者，在 Git Setup 階段勾選如下:
+
+* Windows Explorer integration (整合到檔案總管)
+
+  + Advanced context menu
+
+* Associate .git* conf...
+
+* Associate .sh file ...
+
+* Use a TrueType font ...
+
+在命令提示字元也能使用 Git:
+
+Adjusting your PATH environment
+
+* Use Git from the Windows Command Prompt
+
+Git 內建與 Windows 相容的 Bash 版本，這項設定讓 Git 可用於第三方工具，如 GUI(圖形使用者介面) 等。
+
+Configuring the line ending conversions
+
+* Checkout Windows-style, commit Unix-style line endings
+
+## Cmd
+
+開啟命令提示字元，輸入:
+
+```{git}
+git --help
+```
+
+如果有正確安裝，則顯示說明介面。
+
+## New repository
+
+在電腦新增一個資料夾，或是選擇一個資料夾。在這資料夾點擊右鍵，開啟 Git Bash 輸入:
+
+```{git}
+git init
+```
+
+會建立 `.git` 子資料夾。
+
+## Add a file to the repo
+
+新增一個名為 `MyFirstFile.Rmd` 的檔案:
+
+```{git}
+echo Git rocks! > MyFirstFile.Rmd
+```
+
+Git rocks! 文字訊息會加入檔案中。
+
+把檔案加入 Git 的管控:
+
+```{git}
+git add MyFirstFile.Rmd
+```
+
+檢查 repo 的狀態:
+
+```{git}
+git status
+```
+
+可以看出 Git 已經收到檔案了。
+
+## Commit
+
+提交檔案:
+
+```{git}
+git commit --message "Initial commit."
+```
+
+提交檔案後，repo 就算是啟用完畢。現有一個 master branch 和一個檔案存在。
+
+> 分支可視為儲存庫裡的路徑，且儲存庫裡可以有多條互相交錯的路徑。
+
+## Making changes
+
+對檔案做出修改:
+
+```{git}
+echo "Making changes to the file" >> MyFirstFile.Rmd
+```
+
+修改後的檔案中加入一行新的文字訊息。
+
+檢查狀態:
+
+```{git}
+git status
+```
+
+可以知道檔案存在修改，但是必須提交後，這些修改才會被寫入儲存庫。
+
+"no changes added to commit" 提醒在提交前確認哪些檔案要放進去。
+
+輸入 git commit 會進入 Vim:
+
+```{git}
+git commit
+```
+
+Vim 的操作如下:
+
+* `i` 進行文字插入
+
+* `Esc` 離開編輯模式
+
+離開編輯模式後，輸入:
+
+* `:w` 寫入檔案
+
+* `:q` 離開 Vim
+
+* `:wq` 寫入檔案後離開 Vim
+
+
+```{git}
+git add .
+git status
+```
+
+
+
+
+
+
+
+

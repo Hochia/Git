@@ -1,0 +1,343 @@
+---
+title: 'Basics: Local'
+author: "Hochia"
+date: "2020/2/4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+了解 Git 如何處理與追蹤檔案的提交歷程，以及熟悉所有 Git 的基本命令
+
+## Structure of the repository
+
+### Working Directory
+
+資料夾經過 git init 初始化成為一個新的儲存庫，稱為工作目錄。
+移動工作目錄並不會損壞儲存庫。
+
+`.git` 資料夾稱 git 目錄。裡面的檔案和資料夾使我們能追蹤檔案狀態與設定儲存庫等。
+
+### Status of the file
+
+* 建立或複製檔案到工作目錄: **未追蹤**
+
+* 把檔案加入儲存庫(git add): **未修改**
+
+此時檔案已經準備提交，抵達集結區。如果修改已經加入索引的檔案，狀態會變成**已修改**
+
+未追蹤------未修改------已修改-----------已集結
+
+--|-加入檔案->|-修改檔案->|-檔案加入集結區->|
+
+--|<-移除檔案-|<---------提交---------------|
+
+集結: staged
+
+提交: commit
+
+### 集結區
+
+集結區指的是一個虛擬位置，存放下次要提交的所有檔案。
+用 git add 命令集結。
+
+**移出集結區**
+
+1. git status 的狀態為 "nothing to commit, working directory clean"
+
+2. 建立新檔案 `touch NewFile.txt`
+
+3. git status 狀態為未追蹤
+
+4. `git add NewFile.txt` 將檔案加入集結區，狀態為已追蹤
+
+5. `git rm --cached NewFile.txt` 將檔案從集結區移出，狀態又變成未追蹤
+
+```{git}
+git status
+touch NewFile.txt
+echo "This is a new file." >> NewFile.txt
+git status
+git add NewFile.txt
+git status
+git rm --cached NewFile.txt
+```
+
+兩個檔案 first.txt 和 second.txt 都被放到集結區，但實際上只要放入 first.txt 就好，修改的作法是:
+
+* 移除集結區的 second.txt
+* 提交變更
+
+所以這次的提交只有 first.txt
+
+```{git}
+touch first.txt second.txt
+git add first.txt second.txt
+git restore --staged second.txt
+git commit -m "Add fitst.txt file"
+```
+
+## History
+
+查看儲存庫的歷史紀錄
+
+```{git}
+git log
+```
+
+### 作者、e-mail、日期
+
+修改作者名稱:
+
+```{git}
+git config user.name "hochia"
+git config user.email
+```
+
+### 提交一堆檔案
+
+提交工作目錄下的所有資料夾和檔案:
+
+```{git}
+git add --all
+git add -A
+```
+
+提交特性類型的檔案:
+
+```{git}
+git add *.txt
+```
+
+忽略某些資料夾和檔案:
+
+1. 在儲存庫建立 `.gitignore` 檔案。
+
+2. 鍵入:
+
+```
+# === Which to ignore ===
+# Ignore temp files
+*.tmp
+```
+
+3. 檔案加入集結區
+
+4. 提交檔案
+
+```{git}
+touch .gitignore
+echo *.tmp >> .gitignore
+git add .gitignore
+git commit -m "Include the .gitignore file to ignore *.tmp files"
+
+touch FileToIgnore.tmp
+git add -A
+git status
+```
+
+**注意: .gitignore 不會對已提交的檔案產生影響**
+
+.gitignore 可以用 # 作為註解
+
+強制加入 .gitignore 指定的檔案
+
+```{git}
+git add -f
+git add --force
+```
+
+[.gitignore reference](http://git-scm.com/docs/gitignore)
+
+### 標示重要的提交
+
+Git 標籤可以在儲存庫中豎立一個里程碑:
+
+```{git}
+git tag -a Milestone -m "the life cycle of git"
+```
+
+可以用來追蹤重大事項，比如新軟體釋出，列入追蹤的項目等。
+
+## Branch
+
+### What is branch
+
+可以藉由分支來實驗某些功能，而不破壞原本正常運作的程式碼。
+
+比如:
+
+* 開發新功能
+
+* 維護專案的不同版本
+
+* 發行版本的管理
+
+一般預設是在 master 分支，master 存放的是可發行、部署的最終程式碼。因此會另外建立分支，而不在 master 裡工作。
+
+1. 查看目前儲存庫的所有分支:
+
+```{git}
+git branch
+```
+
+星號與綠色提示我們目前所在的分支。
+
+2. 建立新分支:
+
+```{git}
+git branch NewWork
+```
+
+3. 切換分支:
+
+```{git}
+git checkout NewWork
+```
+
+切換到前一個分支:
+
+```{git}
+git checkout -
+```
+
+4. 鳥瞰分支:
+
+透過 Git GUI 檢視，或是用 Git:
+
+```{git}
+git log --graph --decorate --pretty=oneline --abbrev-commit
+```
+
+5. 合併分支:
+
+比如把 NewWork 分支合併到 master 分支:
+
+```{git}
+git checkout master
+git merge NewWork
+```
+
+合併不是分支的終點，不需要等到都完成工作才進行合併分支。
+時常做分支合併反而能減少麻煩，避免單一檔案裡就有太多的異動要處理。
+
+
+### Deal with the branchs
+
+比對分支:
+
+```{git}
+git diff master..NewWork
+git log master..NewWork
+git shortlog master..NewWork
+```
+
+從後者的角度檢視差異。
+
+在 Linux 或 Mac 通常有現成的視覺化工具可以處理，但是 Windows 沒有。
+
+避免處理極為複雜的合併，至少遵守以下兩點:
+
+* 避免在不同的分支對相同的檔案進行繁雜修改
+
+* 極少合併分支
+
+
+案例一: 檔案在不同分支的內容相異。
+
+合併發生衝突時，直接打開檔案進行修改，移除衝突標記，並在提交時註記衝突已經解決，比如:
+
+```{git}
+git add .
+git commit -m "solve conflict"
+```
+
+案例二: 刪除檔案造成衝突
+
+Git 無法判斷要保留編輯過的檔案還是要刪除檔案。
+
+NewWork 分支移除檔案，在 master 分支編輯 file1.txt
+
+```{git}
+git checkout NewWork
+git rm file1.txt
+git commit -m "file1.txt removed"
+git checkout master
+echo "This file is not removed in master" >> file1.txt
+git add file1.txt
+git commit -m "edited file1.txt"
+git merge NewWork
+git status
+git add file1.txt
+git commit
+```
+
+會進入 Vim，使用預設的合併訊息有助於未來檢視。
+
+如果要移除檔案，最後兩個步驟改成:
+
+```{git}
+git rm file1.txt
+git commit
+```
+
+### Stash
+
+偶而會遇到中斷目前的工作並切換到不同分支。
+有時候，修改還沒到可以提交的程度，
+原因是只完成部分，不一致的結果，甚至還無法編譯。
+Git 會阻止我們切換到其他分支，
+除非將修改提交或進行貯存，否則不能切換。
+
+貯存預設的描述會自動和你的工作一起加到貯存，Git 的狀態就會淨空:
+
+```{git}
+git stash
+git status
+git stash list
+git stash apply
+```
+
+貯存是強大的功能，可以有好幾個不同的貯存，套用到不同分支，或是取消已套用的內容，也可以在貯存中建立新的分支。
+
+記得養成一個好習慣: 決不提交未完成的修改。
+
+## Others
+
+程式碼很長，可以利用 Git 別名打造自己的命令
+
+。
+
+```{git}
+git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev-commit"
+```
+
+語法: `git config <層級> alias.<別名> "<命令>"`
+
+命令不要再打 git 開頭。
+
+層級:
+
+* 儲存庫: 只對目前的儲存庫有效
+
+* 使用者: 只對目前的使用者，所有儲存庫都有效
+
+* 系統: 對所有使用者，所有儲存庫都有效
+
+
+Git 常出現多種方法都可以做同一件事情的狀況，容易讓人無所適從，但 Git 也會提供命令用法的建議和範例，或是參考操作手冊或使用命令 `git <命令> --help` 取得資訊。
+
+
+
+
+
+
+
+
+
+
+
+
+
