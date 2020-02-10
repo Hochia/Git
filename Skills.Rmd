@@ -1,0 +1,115 @@
+---
+title: "Skills"
+author: "Hochia"
+date: "2020/2/9"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Useful skills
+
+修改最近提交的訊息:
+
+```{git}
+git commit --amend -m "新的提交訊息"
+```
+
+追蹤檔案異動:
+
+```{git}
+git blame README.md
+```
+
+檢視過去提交的資訊，開頭為提交的雜湊碼。
+
+查看某次提交所做的修改:
+
+```{git}
+git show a1b2c3
+```
+
+運用 GUI:
+
+```{git}
+git gui blame README.md
+```
+
+## Cherry picking
+
+選用提交是指從其他地方取得特定的提交，並加以套用:
+
+```{git}
+git checkout br2
+git cherry-pick a1b2c3
+```
+
+如此，在 br1 分支所提交的 a1b2c3，就套用到 br2 分支並且提交了，雜湊碼為 x4y5z6。
+
+如果 Git 無法自動套用這些更動，衝突就需手動解決，再由你進行提交。
+
+也可以取得某個範圍內的提交:
+
+```{git}
+git cherry-pick br1~2..br1~0
+```
+
+也就是在 br1 分支選取最近兩次的提交。
+
+
+
+## Backup
+
+備份儲存庫的兩種做法:
+
+* 儲存庫封存
+
+* 打包整個儲存庫
+
+### 儲存庫封存
+
+如果不需要包含版本變動資訊，只是要把儲存庫封存，可以用 `git archive`:
+
+```{git}
+git archive master --format=zip --output=../repbck.zip
+```
+
+也可只備份某個分支或是某次提交的檔案，比如封存最近的提交:
+
+```{git}
+git archive HEAD --format=zip --output=../headbck.zip
+```
+
+### 打包整個儲存庫
+
+可以利用該命令將儲存庫匯出成一份可供還原的快照。
+
+比如複製儲存庫到另外一台電腦，在 master 分支建立一支名為 repo.bundle 的封裝檔:
+
+```{git}
+git bundle create ../repo.bundle master
+```
+
+封裝檔傳遞到另外一台電腦後，運用 `git clone`進行還原:
+
+```{git}
+git clone repo.bundle repo -b master
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
