@@ -1,0 +1,28 @@
+---
+title: "Workflow"
+author: "Hochia"
+date: "2020/2/9"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The art of commit
+
+最常見的挑戰是如何將工作細分成較小又具有意義的任務細項。
+
+* 一次只提交一項異動
+
+通常會修改多處，且最終難以記住曾經做過的每一件事情。
+
+按照不同的檔案做不同的提交可以降低傷害，
+但是最好的習慣是每次修改後都做一次提交。
+
+
+
+
+
+
+
