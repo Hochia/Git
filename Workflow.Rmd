@@ -20,6 +20,62 @@ knitr::opts_chunk$set(echo = TRUE)
 按照不同的檔案做不同的提交可以降低傷害，
 但是最好的習慣是每次修改後都做一次提交。
 
+先寫下提交訊息，再開始撰寫程式碼
+
+* 不要拆分單一細項到不同提交裡
+
+* 說明功能變化，而不是實作的細節
+
+比如:
+
+" 補充密碼取回機制
+
+- 增加 "遺失密碼" 的連結到登入頁
+- 把連結寄信給使用者以重設密碼"
+
+具有明確的主旨，必要時加入項目式的條列陳述，或是其他有用資訊。
+
+
+* 不要懼怕提交
+
+雖然有時候解法不好找，但遇上的麻煩總是會有安然脫身之道。
+
+* 孤立較不具重要性的提交
+
+最好將與更新功能無關提交與提他種類的程式碼變化區分出來。
+
+* 完美的提交訊息
+
+並不存在完美，必須要在團隊成員的共識下遵守一套做事標準。
+
+## Follow a specific workflow
+
+[GitFlow blog](https://nvie.com/posts/a-successful-git-branching-model/)
+
+[GitFlow github](https://github.com/nvie/gitflow)
+
+* **master**
+
+* hotfix
+
+* release
+
+* **develop**
+
+* feature
+
+**master** 和 **develop** 是永遠要保留的分支。
+
+master 紀錄正式版本的編號
+
+hotfix 用來修改正式版本的錯誤，再推送回 master
+
+develop 用作整合所有新功能，合併 hotfix 的修正
+
+release 用來放置新版本，並修改錯誤，修改也要合併到 develop。確定新版本沒問題，就推送到 master
+
+feature 作為新功能的開發，是由 develop 所建立的分支，經常性的將成果合併回 develop。
+任務結束後就可刪除 feature 分支。
 
 
 
